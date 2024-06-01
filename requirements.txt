@@ -1,0 +1,5 @@
+sentence_transformers
+numpy
+model
+torch
+flask
