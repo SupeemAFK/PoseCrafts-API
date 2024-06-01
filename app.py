@@ -1,4 +1,5 @@
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 import torch
 import model
 import numpy as np
@@ -17,6 +18,8 @@ lstm_model = model.LSTM(embedding_dim, hidden_dim, num_layers, output_dim)
 lstm_model.load_state_dict(torch.load('lstm.pt'))
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def GeneratePosesJSON(input):
     with torch.no_grad():
@@ -35,13 +38,15 @@ def GeneratePosesJSON(input):
         formatted_data = []
         for person in data:
             formatted_data.append({ "pose_keypoints_2d": person })
-        return { 'people': data, 'animals': [], 'canvas_width': 900, 'canvas_height': 300 }
+        return { 'people': formatted_data, 'animals': [], 'canvas_width': 900, 'canvas_height': 300 }
     
 @app.route('/')
+@cross_origin()
 def hello():
     return "Hello, World!"
 
 @app.route('/generate')
+@cross_origin()
 def generatePose():
     text = request.args.get('text')
     data = GeneratePosesJSON(text)
