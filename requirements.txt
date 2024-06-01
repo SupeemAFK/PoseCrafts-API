@@ -1,4 +1,5 @@
 sentence_transformers
+flask-cors
 numpy
 torch
 Flask
