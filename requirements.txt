@@ -1,4 +1,5 @@
 sentence_transformers
 numpy
 torch
-flask
+Flask
+Gunicorn
